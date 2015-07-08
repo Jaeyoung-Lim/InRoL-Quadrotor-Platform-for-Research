@@ -1,0 +1,53 @@
+## Implementing PCTx
+PCTx bought from [endurance RC](http://www.endurance-rc.com/pctx.php) was bought to implement control telemetry using a ground station 
+
+PCTx will be connected to the ground station on one end and the [Turnigy 9X](http://hobbyking.com/hobbyking/store/__8992__Turnigy_9X_9Ch_Transmitter_w_Module_8ch_Receiver_Mode_2_v2_Firmware_.html) transmitter trainer port via a 3.5mm stereo Jack
+
+## System Setup
+Setup Software
+There are sample codes and applications on the Endurance RC website to test whether the PCTx is working properly. 
+### Issue 01 : PCTx PPM input was not going in to the trainer port of the Turnigy 9X.
+a. Trainer mode was verified to function properly using two turnigy 9X
+b. No PPM input although using proper functioning application provided by Endurance RC
+This is due to the voltage level of the PPM input as JR/Futaba transmitter trainer port peak voltage is 1.5V(which is suspected that the PCTx will, too) compared to the Turnigy 9X which the trainer port is directly connected to the Atmega processor inside which has a 5V TTL voltage. 
+Sol1) Currently work-in-process : Using a level shifter to shift the voltage level of the PPM signal
+	-Failed as voltage Level for Turnigy 9X was 5V compared to 1.8V of PCTx which is compatible with Futaba transmitters
+Sol2) Built a USB2PPM device using Arduino UNO for the application
+
+### Issue 02 : Software crashes after sending around 700 packets of data
+Sol) without handshake, the buffer is not flushed, resulting in an overflow. handshake should be done to flush the buffer. The buffer is flushed when sending back data while receiving. 
+
+
+Setting up USB2PPM
+An additional hardware was needed to resolve Issue01.
+
+### Issue 03 : Using interrupt in arduino UNO stops serial communication between the PC. 
+Sol ) https://www.sparkfun.com/tutorials/326
+Interrupts should be disabled while receiving serial communication -> verification of the ppm signal is needed!
+Suggestions: 
+http://forum.arduino.cc/index.php?topic=8755.0 THhis link includes code for generating PPM signals without using interrupts
+http://www.mftech.de/ppm_en.htm PPM Signal explaned
+
+
+
+Setup Turnigy 9X
+To interface via trainer mode, the transmitter should be configured as a trainer mode. A [video](https://www.youtube.com/watch?v=G_YuBu1E8iI) filmed by Dennis Baldwin shows how to setup two Turnigy 9X transmitters for trainer mode.
+1. Connect the trainer cable from PCTx (or from the trainee transmitter) and connect it to the transmitter
+(incase connect another Turnigy 9X, the trainee transmitter should have the RF module disconnected)
+2. Turn on the Turnigy 9X
+3. Go to SETTINGS->TRAINER and change the INH to OFF
+4. If the trainer switch(Below Right) is toggled, you will see that the Trainer changes to ON from OFF
+5. select the channels which will be controlled by the trainee(or PCTx)
+6. Go to SETTINGS->DISPLAY and check if the trainer inputs are properly input into the Turnigy 9X
+
+Reference Links : 
+https://code.google.com/p/gruvin9x/wiki/PpmIn
+http://www.rcgroups.com/forums/showthread.php?t=1484749
+
+### Informative References
+Arduino can be used as an alternative to PCTx. As Turnigy 9X is using a 5V PPM input for the trainer port, an Arduino can easily interface with Turnigy 9X using the trainer port. 
+This can lead to interesting features such as gimbal control joysticks or head trackers. 
+Reference Links :
+https://www.youtube.com/watch?v=bBjPMjqcHAc
+http://forum.arduino.cc/index.php/topic,20536.0.html#11
+http://forum.arduino.cc/index.php/topic,8755.0.html
