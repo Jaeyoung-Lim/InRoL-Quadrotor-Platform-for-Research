@@ -4,14 +4,14 @@ This is a repository for the system developed as a quadrotor research platform f
 
 ## Overview
 The system is built in two versions. USB2PPm system and ROS System. Each system consists of several subsystems as below. 
-1.USB2PPM System
-- PC USB2PPM interface 
-- USB2PPM
-- Quadrotor
+- USB2PPM System
+  - PC USB2PPM interface 
+  - USB2PPM
+  - Quadrotor
 
-2. ROS System
-- GCS
-- Quadrotor
+- ROS System
+  - GCS
+  - Quadrotor
 
 ## USB2PPM System
 ### PC USB2PPM interface software
