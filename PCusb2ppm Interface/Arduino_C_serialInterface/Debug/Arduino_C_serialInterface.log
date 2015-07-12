@@ -1,15 +1,21 @@
-﻿Build started 2015-07-08 오후 2:38:45.
-     1>Project "C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\Arduino_C_SerialInterface\Arduino_C_serialInterface_v20\Arduino_C_serialInterface\Arduino_C_serialInterface.vcxproj" on node 2 (Build target(s)).
+﻿Build started 2015-07-12 오전 9:42:07.
+     1>Project "C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\InRol_Quadrotor_Platform\InRoL-Quadrotor-Platform-for-Research\PCusb2ppm Interface\Arduino_C_serialInterface\Arduino_C_serialInterface.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
          main.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\Arduino_C_SerialInterface\Arduino_C_serialInterface_v20\Debug\Arduino_C_serialInterface.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\Arduino_C_SerialInterface\Arduino_C_serialInterface_v20\Debug\Arduino_C_serialInterface.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\Arduino_C_SerialInterface\Arduino_C_serialInterface_v20\Debug\Arduino_C_serialInterface.lib" /MACHINE:X86 Debug\main.obj
-         Debug\Serial.obj
-         Debug\usb2PPM.obj
-         Arduino_C_serialInterface.vcxproj -> C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\Arduino_C_SerialInterface\Arduino_C_serialInterface_v20\Debug\Arduino_C_serialInterface.exe
-     1>Done Building Project "C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\Arduino_C_SerialInterface\Arduino_C_serialInterface_v20\Arduino_C_serialInterface\Arduino_C_serialInterface.vcxproj" (Build target(s)).
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(17): error C2275: 'Serial' : illegal use of this type as an expression
+                 c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\serialclass.h(11) : see declaration of 'Serial'
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(17): error C2146: syntax error : missing ';' before identifier 'SP'
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(17): error C2065: 'SP' : undeclared identifier
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(19): error C2065: 'SP' : undeclared identifier
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(19): error C2227: left of '->IsConnected' must point to class/struct/union/generic type
+                 type is 'unknown-type'
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(31): error C2065: 'SP' : undeclared identifier
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(31): error C2227: left of '->IsConnected' must point to class/struct/union/generic type
+                 type is 'unknown-type'
+     1>c:\users\jaeyoung\documents\snu\기계시스템설계1\codes\inrol_quadrotor_platform\inrol-quadrotor-platform-for-research\pcusb2ppm interface\arduino_c_serialinterface\main.cpp(31): fatal error C1903: unable to recover from previous error(s); stopping compilation
+     1>Done Building Project "C:\Users\Jaeyoung\Documents\SNU\기계시스템설계1\Codes\InRol_Quadrotor_Platform\InRoL-Quadrotor-Platform-for-Research\PCusb2ppm Interface\Arduino_C_serialInterface\Arduino_C_serialInterface.vcxproj" (Build target(s)) -- FAILED.
 
-Build succeeded.
+Build FAILED.
 
-Time Elapsed 00:00:06.48
+Time Elapsed 00:00:04.83

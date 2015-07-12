@@ -13,8 +13,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	printf("Serial Interface Application for USB2PPM\n");
 	printf("Ver. 1.0.0\n");
 	printf("Developed in Interactive / Network Robotics Lab, Seoul National University\n");
-	printf("////////////////////////////////////////\n");
-	Serial* SP = new Serial("\\\\.\\COM24");    // adjust as needed
+	printf("////////////////////////////////////////\n");+
+	Serial SP = new Serial("\\\\.\\COM24");    // adjust as needed
 
 	if (SP->IsConnected()) printf("Connection Verified\n");
 
