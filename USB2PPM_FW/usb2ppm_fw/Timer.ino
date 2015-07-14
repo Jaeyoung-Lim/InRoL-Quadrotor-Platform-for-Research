@@ -13,3 +13,10 @@ ISR(TIMER1_COMPA_vect)
  } 
 }
 
+void timer_loopcount(){
+    count++;
+  if(count>500){
+    count =0;
+  }
+}
+
