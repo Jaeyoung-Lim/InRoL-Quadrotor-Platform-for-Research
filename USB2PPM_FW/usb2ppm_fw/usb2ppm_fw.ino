@@ -15,8 +15,9 @@
 // Pin Definitions
 #define led_PIN  7 //LED Status LED
 #define armsw_PIN 5 // Arm switch pin
-#define trimsw_PIN 5 //Trim enable switch
+#define mode_PIN 4 //Trim enable switch
 #define ppmout_PIN 10 // PPM output
+
 
 
 //String Variable initialization
@@ -33,6 +34,8 @@ int pulses[8];
 int number_of_outputs =8;
 
 int count=650;
+int arm_stat =0;
+int mode_stat =0;
 
 
 void setup() {
@@ -40,6 +43,7 @@ void setup() {
   pinMode(ppmout_PIN, OUTPUT);
   pinMode(armsw_PIN, INPUT);
   pinMode(led_PIN, OUTPUT);
+  pinMode(led_PIN, INPUT);
 
   Serial.begin(115200); // Initialize Serial
   init_buffer(); //Initialize buffer
@@ -56,18 +60,24 @@ void setup() {
 // Main Loop will run at 50Hz
 void loop() {
 
-  /* 
-   *  // Trim Mode
-  
-
-  //Arm Mode
-  if(armsw_PIN==HIGH){
+ 
+  // Trim Mode
+ if(digitalRead(mode_PIN)==HIGH){
+    mode_stat=1700;
   }
   else {
+    mode_stat = 650;
+  }  
+
+  // Arm Mode
+  if(digitalRead(armsw_PIN)==HIGH){
+    arm_stat=1700;
+  }
+  else {
+    arm_stat = 650;
   }
   
-  */
- //Serial Mode
+   //Serial Mode
    serial_Event(); //Read String to buffer
   
   if (stringComplete) {//Execute if serial is received
@@ -82,6 +92,7 @@ void loop() {
   ppm_minmax(); //Constrain pulse values to the minimum and maximum
   timer_loopcount(); //Counter for handshake
 
-delay(20);
+  serial_monitor(); //For debugging through Serial Monitor
+  delay(20);
 }
 

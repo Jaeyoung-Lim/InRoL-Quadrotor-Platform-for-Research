@@ -58,3 +58,13 @@ void init_buffer(){
    }
    stringComplete = false; //Disable flag
 }
+
+void serial_monitor(){
+  Serial.print("Ch1: ");  Serial.print(pulses[0]);
+  Serial.print(" Ch2: "); Serial.print(pulses[1]);
+  Serial.print(" Ch3: "); Serial.print(pulses[2]);
+  Serial.print(" Ch4: "); Serial.print(pulses[3]);
+  Serial.print(" armSW: "); Serial.println(arm_stat);
+  Serial.print(" modeSW: "); Serial.println(mode_stat);
+}
+
