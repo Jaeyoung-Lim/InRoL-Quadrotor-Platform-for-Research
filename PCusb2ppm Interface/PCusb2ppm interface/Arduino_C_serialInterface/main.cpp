@@ -60,8 +60,8 @@ int _tmain(int argc, _TCHAR* argv[])
 			cnt_hz++;
 			cnt = 0; 
 		}
-		if (ch1 ==1500){
-			ch1 = 650;
+		if (ch1 ==1023){
+			ch1 = 0;
 		}
 		
 	Sleep(20);
