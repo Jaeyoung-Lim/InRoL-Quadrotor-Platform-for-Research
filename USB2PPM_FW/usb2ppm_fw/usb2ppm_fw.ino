@@ -47,7 +47,6 @@ void setup() {
   pinMode(ppmout_PIN, OUTPUT);
   pinMode(armsw_PIN, INPUT);
   pinMode(led_PIN, OUTPUT);
-  pinMode(led_PIN, INPUT);
 
   Serial.begin(115200); // Initialize Serial
   init_buffer(); //Initialize buffer
@@ -75,11 +74,14 @@ void loop() {
     }
   }
   
-  ppm_command(mode); //Copy commands to ppm
+  ppm_command(mode); //Set pulse values for PPM signal
   ppm_minmax(); //Constrain pulse values to the minimum and maximum
   sw_led();
   timer_loopcount(); //Counter for handshake
-
-  serial_monitor(); //For debugging through Serial Monitor
+  
+  //Always disable serial monitor before operating, only for development use
+  //serial_monitor(); //For debugging through Serial Monitor
+  serial_handshake();
+  
   delay(20);
 }

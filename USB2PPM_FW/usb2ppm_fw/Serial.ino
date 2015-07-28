@@ -76,3 +76,9 @@ void serial_monitor(){
   */
 }
 
+void serial_handshake(){
+  if(count>50){
+  Serial.print("Ack");
+  }
+}
+

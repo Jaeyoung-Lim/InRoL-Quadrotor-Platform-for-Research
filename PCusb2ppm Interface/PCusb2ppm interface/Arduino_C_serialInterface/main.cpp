@@ -33,7 +33,7 @@ int _tmain(int argc, _TCHAR* argv[])
 		//readResult = SP->ReadData(incomingData, dataLength);
 		//printf("Bytes read: (-1 means no data available) %i\n", readResult);
 	
-		strcpy_s(outgoingData, 26, encode_PPM(ch1, ch1+300, ch1+100, ch1+200));
+		strcpy_s(outgoingData, 26, encode_PPM(ch1+50, ch1, ch1+100, ch1+150));
 		//printf("Incoming data : %s\n", incomingData);
 		//SP->WriteData(outgoingData, dataLength);
 		SP->WriteData(outgoingData, dataLength);
