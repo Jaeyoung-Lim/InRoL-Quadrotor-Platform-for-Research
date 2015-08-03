@@ -123,6 +123,7 @@ DWORD WINAPI TrackerPollingThreadFunc (LPVOID lpParam)  // The rate is about 100
 	cur_TState.NoOfSegments = pTracker->MyClient.GetSegmentCount(SubjectName).SegmentCount;
 	std::string SegmentName = pTracker->MyClient.GetSegmentName(SubjectName,0).SegmentName;
 
+	/*
 	TState cur_TState2;
 	cur_TState2.FrameNumber = pTracker->MyClient.GetFrameNumber().FrameNumber;
 	cur_TState2.TotalLatency = pTracker->MyClient.GetLatencyTotal().Total;
@@ -130,7 +131,7 @@ DWORD WINAPI TrackerPollingThreadFunc (LPVOID lpParam)  // The rate is about 100
 	std::string SubjectName2 = pTracker->MyClient.GetSubjectName(1).SubjectName;
 	cur_TState2.NoOfSegments = pTracker->MyClient.GetSegmentCount(SubjectName2).SegmentCount;
 	std::string SegmentName2 = pTracker->MyClient.GetSegmentName(SubjectName2,0).SegmentName;
-
+	*/
 	//Here calculate velocity
 
 	static LARGE_INTEGER l;
@@ -154,36 +155,41 @@ DWORD WINAPI TrackerPollingThreadFunc (LPVOID lpParam)  // The rate is about 100
 	static double xlast2[3]  = {0};
 	static double vlast2[3] = {0};
 
+	/*
 	memcpy(cur_TState2.Translation, pTracker->MyClient.GetSegmentGlobalTranslation( SubjectName2, SegmentName2 ).Translation, sizeof(cur_TState2.Translation)); // position
 	memcpy(cur_TState2.RotationMatrix, pTracker->MyClient.GetSegmentGlobalRotationMatrix( SubjectName2, SegmentName2 ).Rotation, sizeof(cur_TState2.RotationMatrix)); // rotation matrix
 	memcpy(cur_TState2.RotationEuler, pTracker->MyClient.GetSegmentGlobalRotationEulerXYZ(SubjectName2, SegmentName2 ).Rotation, sizeof(cur_TState2.RotationEuler)); //euler angle
-
+	*/
 	//velocity
 	double Wlast = 0.5;
 	cur_TState.Velocity[0] = (1.0-Wlast)*(cur_TState.Translation[0] - xlast[0])/T + Wlast*vlast[0]; 
 	cur_TState.Velocity[1] = (1.0-Wlast)*(cur_TState.Translation[1] - xlast[1])/T + Wlast*vlast[1];
 	cur_TState.Velocity[2] = (1.0-Wlast)*(cur_TState.Translation[2] - xlast[2])/T + Wlast*vlast[2];
 
+	/*
 	cur_TState2.Velocity[0] = (1.0-Wlast)*(cur_TState2.Translation[0] - xlast2[0])/T + Wlast*vlast2[0]; 
 	cur_TState2.Velocity[1] = (1.0-Wlast)*(cur_TState2.Translation[1] - xlast2[1])/T + Wlast*vlast2[1];
 	cur_TState2.Velocity[2] = (1.0-Wlast)*(cur_TState2.Translation[2] - xlast2[2])/T + Wlast*vlast2[2];
+	*/
 	
 	memcpy(xlast, cur_TState.Translation, sizeof(xlast));
 	memcpy(vlast, cur_TState.Velocity, sizeof(vlast));
 	
+	/*
 	memcpy(xlast2, cur_TState2.Translation, sizeof(xlast2));
 	memcpy(vlast2, cur_TState2.Velocity, sizeof(vlast2));
+	*/
 
-
+	// copying TState from cur_TState to g_TState
 	WaitForSingleObject(g_TStateMutex, INFINITE);
 	memcpy(&g_TState, &cur_TState, sizeof(TState));
 	ReleaseMutex(g_TStateMutex);
 
-
+	/*
 	WaitForSingleObject(g_TStateMutex2, INFINITE);
 	memcpy(&g_TState2, &cur_TState2, sizeof(TState));
 	ReleaseMutex(g_TStateMutex2);
-		
+	*/	
 	//Sleep(2);
 	}//while(true)
 }

@@ -1,4 +1,9 @@
 #include "SerialClass.h"
+#include "StdAfx.h"
+#include <algorithm>
+
+
+
 
 Serial::Serial(char *portName)
 {

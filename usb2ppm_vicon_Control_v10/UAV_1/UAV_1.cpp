@@ -29,42 +29,45 @@ using namespace std;
 //XCommand g_XCommand; // hummingbird
 //XState g_XState; // hummingbird
 CTRL_Input g_XPCommand;
-CTRL_Input g_XPCommand2;
-XPState g_XPState;
-XPState g_XPState2;
+//CTRL_Input g_XPCommand2;
+//XPState g_XPState;
+//XPState g_XPState2;
 
 XConfig g_XConfig;
 XStatus g_XStatus;
-//States...Haptic side
-HCommand g_HCommand;
-HState g_HState;
 //States...Tracker side
 TState g_TState;
-TState g_TState2;
+//TState g_TState2;
 
 //States...Ptam side
+/*
 PState g_PState;
 int signal;
 Vector3 x_ps;
 Vector3 x_v0;
 Matrix33 R_v0;
-
+*/
+//States...Haptic side
+/*
+HCommand g_HCommand;
+HState g_HState;
+*/
 
 //All in Client.h
 //Mutex...
 HANDLE g_XCommandMutex = NULL;
 HANDLE g_XStateMutex = NULL;
-HANDLE g_XCommandMutex2 = NULL;
-HANDLE g_XStateMutex2 = NULL;
+//HANDLE g_XCommandMutex2 = NULL;
+//HANDLE g_XStateMutex2 = NULL;
 //HANDLE g_XConfigMutex;
 //HANDLE g_XStatusMutex;
 
-HANDLE g_HCommandMutex;
-HANDLE g_HStateMutex;
+//HANDLE g_HCommandMutex;
+//HANDLE g_HStateMutex;
 HANDLE g_TStateMutex;
-HANDLE g_TStateMutex2;
+//HANDLE g_TStateMutex2;
 
-HANDLE g_PStateMutex;
+//HANDLE g_PStateMutex;
 
 //motion scale
 long long initialTick;
@@ -100,6 +103,7 @@ SOCKADDR_IN  client_addr;
 
 ////////MainThreadDeclear////
 int HXControl(void);
+int HXTest(void);
 
 int _tmain(int argc, _TCHAR* argv[]) //This Control the All the states' Communication
 {
@@ -112,17 +116,17 @@ int _tmain(int argc, _TCHAR* argv[]) //This Control the All the states' Communic
 	sec_attr.bInheritHandle       = TRUE;
 	// MutexCreated
 	g_XCommandMutex = CreateMutex(&sec_attr, NULL, _T("mutex for Xcommand"));
-	g_XCommandMutex2 = CreateMutex(&sec_attr, NULL, _T("mutex for Xcommand2"));
+	//g_XCommandMutex2 = CreateMutex(&sec_attr, NULL, _T("mutex for Xcommand2"));
 	g_XStateMutex = CreateMutex(&sec_attr, NULL, _T("mutex for XState"));
-	g_XStateMutex2 = CreateMutex(&sec_attr, NULL, _T("mutex for XState2"));
+	//g_XStateMutex2 = CreateMutex(&sec_attr, NULL, _T("mutex for XState2"));
 
-	g_HCommandMutex = CreateMutex(&sec_attr, NULL, _T("mutex for HCommand"));
-	g_HStateMutex = CreateMutex(&sec_attr, NULL, _T("mutex for HState"));
+	//g_HCommandMutex = CreateMutex(&sec_attr, NULL, _T("mutex for HCommand"));
+	//g_HStateMutex = CreateMutex(&sec_attr, NULL, _T("mutex for HState"));
 
 	g_TStateMutex = CreateMutex(&sec_attr, NULL, _T("mutex for TState"));
-	g_TStateMutex2 = CreateMutex(&sec_attr, NULL, _T("mutex for TState2"));
+	//g_TStateMutex2 = CreateMutex(&sec_attr, NULL, _T("mutex for TState2"));
 
-	g_PStateMutex = CreateMutex(&sec_attr, NULL, _T("mutex for PState"));
+	//g_PStateMutex = CreateMutex(&sec_attr, NULL, _T("mutex for PState"));
 
 
 	// UDP Side Established
@@ -171,16 +175,16 @@ int HXControl(void)
 	int iResult = 0;
 	
 	
-	XPState cur_XPState;
-	HState cur_HState;
+	//XPState cur_XPState;
+	//HState cur_HState;
 	TState cur_TState;
-	TState cur_TState2;
-	PState cur_PState;
+	//TState cur_TState2;
+	//PState cur_PState;
 	
 	CTRL_Input cur_XPCommand;
-	CTRL_Input cur_XPCommand2;
+	//CTRL_Input cur_XPCommand2;w1
 
-	HCommand cur_HCommand;
+	//HCommand cur_HCommand;
 
 ////////////////////////////////Main Loop T/////////////////////////// //////
 	static LARGE_INTEGER freq;
@@ -204,6 +208,7 @@ int HXControl(void)
 	
 ////////////////////////////////////////Here begin the state polling from Haptic(virtual mass and object), Flyer, Tracker
 	//Get all the States
+	/*
 	WaitForSingleObject(g_XStateMutex,INFINITE);
 	memcpy(&cur_XPState, &g_XPState, sizeof(XPState));
 	ReleaseMutex(g_XStateMutex);
@@ -211,11 +216,14 @@ int HXControl(void)
 	WaitForSingleObject(g_HStateMutex,INFINITE);
 	memcpy(&cur_HState, &g_HState, sizeof(HState));
 	ReleaseMutex(g_HStateMutex);
+	*/
 
+	// get parameters from Vicon
 	WaitForSingleObject(g_TStateMutex,INFINITE);
 	memcpy(&cur_TState, &g_TState, sizeof(TState));
 	ReleaseMutex(g_TStateMutex);
 
+	/*
 	WaitForSingleObject(g_TStateMutex2,INFINITE);
 	memcpy(&cur_TState2, &g_TState2, sizeof(TState));
 	ReleaseMutex(g_TStateMutex2);
@@ -223,7 +231,7 @@ int HXControl(void)
 	WaitForSingleObject(g_PStateMutex,INFINITE);
 	memcpy(&cur_PState, &g_PState, sizeof(PState));
 	ReleaseMutex(g_PStateMutex);
-
+	*/
 	// Get position, velocity,Rotation matrix from Tracker
 
 	Vector3 x(cur_TState.Translation[0]/1000.0, cur_TState.Translation[1]/1000.0, cur_TState.Translation[2]/1000.0); //in m
@@ -231,13 +239,14 @@ int HXControl(void)
 	Vector3 ddx;
 	Matrix33 R(cur_TState.RotationMatrix);// R is from Body frame to Global Frame
 
-
+	/*
 	Vector3 x2(cur_PState.Translation[0], cur_PState.Translation[1], cur_PState.Translation[2]); //in m
 	Vector3 dx2(cur_PState.Velocity[0], cur_PState.Velocity[1], cur_PState.Velocity[2]); //in m/s
 	Vector3 ddx2;
 	Matrix33 R2;// R is from Body frame to Global Frame //changed!! we will use rotation from LLP
-
+	*/
 	//Make signal for PTAM
+	/*
 	if(signal==1)
 	{
 		if((x-x_ps).Magnitude()>0.10)
@@ -249,11 +258,13 @@ int HXControl(void)
 		}
 		else	signal=1;
 	}
-
+	*/
 	//Get pose from Flyer
+	/*
 	double po = cur_XPState.angle_nick/1000.0;
 	double ro = cur_XPState.angle_roll/1000.0;
 	double wo = cur_XPState.angle_yaw/1000.0+0.0;//check!!!!!!!!!!!!!!!!!!
+	*/
 //	std::cout << ro << "	" << po << "	" << wo << std::endl;
 
 
@@ -533,6 +544,7 @@ int HXControl(void)
 	memcpy(&g_XPCommand, &cur_XPCommand, sizeof(CTRL_Input));
 	ReleaseMutex(g_XCommandMutex);
 
+	/*
 	WaitForSingleObject(g_XCommandMutex2,INFINITE);
 	memcpy(&g_XPCommand2, &cur_XPCommand2, sizeof(CTRL_Input));
 	ReleaseMutex(g_XCommandMutex2);
@@ -540,38 +552,17 @@ int HXControl(void)
 	cur_HCommand.xset = dx.x;
 	cur_HCommand.yset = dx.y;
 	cur_HCommand.zset = dx.z;	
-
-	cur_HCommand.seqNo = cur_TState.seqNo;
 	
+	cur_HCommand.seqNo = cur_TState.seqNo;
+	*/
 	// Send Haptic Command
+	/*
 	WaitForSingleObject(g_HCommandMutex,INFINITE);
 	memcpy(&g_HCommand, &cur_HCommand, sizeof(HCommand));
 	ReleaseMutex(g_HCommandMutex);
-
-//**********************************************CONFIRM ZONE**********************************************************//
-//	std::cout << time << "	" << xd.x << "	" << xd.y << "	" << xd.z <<std::endl;
-//	std::cout <<  g_PState.Translation[0] <<" "<<  g_PState.Translation[1] <<" "<<  g_PState.Translation[2] <<" "<<  std::endl;
-//	std::cout << "position : " << cur_TState.Translation[0] << "	" << cur_TState.Translation[1] << "	" << cur_TState.Translation[2] <<  std::endl;
-//	std::cout << "Thrust: " << cur_XPCommand.thrust << "	w1: "     << cur_XPCommand.roll     <<"	w2: "     << cur_XPCommand.pitch     << "	w3: "     << cur_XPCommand.yaw <<  std::endl;
-//	std::cout << ro << "	" << po << "	" << wo << std::endl;
-
-// 	outFile1 << time << "	" << cur_TState.RotationEuler[0] << "	" << cur_TState.RotationEuler[1] << "	" << cur_TState.RotationEuler[2] << "	" << ro << "	" << po << "	" << wo<< std::endl;
-//	outFile1 << time << "	" << xd.x << "	" << xd.y << "	" << xd.z << "	" << sqrt(dxd.Magnitude()) <<std::endl;
-//	outFile1 << time << "	" << ACC_IMU.x << "	" << ACC_IMU.y << "	" << ACC_IMU.z << "	" << ddx.x << "	" << ddx.y << "	" << ddx.z <<" "<< acc_fil.x << "	" << acc_fil.y << "	" << acc_fil.z << std::endl;
-//	outFile2 << time << "	" << (x-x2).x << "	" << (x-x2).y << "	" << (x-x2).z << std::endl;
-//	outFile5 << time << "	" << m_hat << "	" << m_hat2 <<std::endl;
-
-	std::cout << time << "	" << x.x << "	" << x.y << "	" << x.z <<"	" << x2.x << "	" << x2.y <<std::endl;
-
-	outFile1 << time << "	" << x.x << "	" << x.y << "	" << x.z <<"	" << x2.x << "	" << x2.y << "	" << x2.z <<std::endl;
-	outFile2 << time << "	" << (x-xd).x << "	" << (x-xd).y << "	" << (x-xd).z << (x-xd).Magnitude() << std::endl;
-	outFile3 << time << "	" <<cur_XPCommand.thrust << "	" << cur_XPCommand.pitch << "	" << cur_XPCommand.roll << "	" << cur_XPCommand2.thrust << "	" << cur_XPCommand2.pitch << "	" << cur_XPCommand2.roll << std::endl;
-	outFile4 << time << "	" << dx.x << "	" << dx.y << "	" << dx.z <<"	" << dx2.x << "	" << dx2.y << "	" << dx2.z <<std::endl;
-
-	outFile5 << time << "	" << a_x << "	" << a_y << "	" << a_z << "	" << a_t << "	" << w_x << "	" << w_y << "	" << w_z
-		<< "	" << h << "	" << dh << "	" << h_r << "	" << dh_r << "	" << speed_x << "	" << speed_y << "	" << speed_z
-		<< "	" << yaw_c << "	" << Hx << "	" << Hy << "	" << Hz << "	" << cur_TState.RotationEuler[2]<<std::endl;
-
+	*/
+	//**********************************************CONFIRM ZONE**********************************************************//
+	//logging
 
 	return iResult;
 }

@@ -2,16 +2,6 @@
 #include "SerialCom.h"
 #include <algorithm>
 
-extern CTRL_Input g_XPCommand;
-extern XPState g_XPState;
-
-extern CTRL_Input g_XPCommand2;
-extern XPState g_XPState2;
-
-extern HANDLE g_XCommandMutex;
-extern HANDLE g_XStateMutex;
-extern HANDLE g_XCommandMutex2;
-extern HANDLE g_XStateMutex2;
 
 
 DWORD WINAPI ReadThreadFunc(LPVOID);
@@ -110,6 +100,7 @@ int SerialCom::Close(void)
 	return iResult;
 }
 
+/*
 DWORD WINAPI ReadThreadFunc(LPVOID lpParam)
 {
 	int iResult = 0;
@@ -199,7 +190,7 @@ DWORD WINAPI ReadThreadFunc(LPVOID lpParam)
 				
 	return iResult;
 }
-
+*/
 
 DWORD WINAPI WriteThreadFunc(LPVOID lpParam)
 {
@@ -241,6 +232,7 @@ DWORD WINAPI WriteThreadFunc(LPVOID lpParam)
 }
 
 //cyclic redundant check
+/*
 unsigned short crc_update(unsigned short crc,unsigned char data)
 {
 	data ^= (crc & 0xff);
@@ -261,3 +253,4 @@ unsigned short crc16(void* data, unsigned short cnt)
 	}
 	return crc;
 }
+*/

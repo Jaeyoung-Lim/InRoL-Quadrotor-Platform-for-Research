@@ -1,5 +1,16 @@
 #include "usb2PPM.h"
 
+extern CTRL_Input g_XPCommand;
+//extern XPState g_XPState;
+
+//extern CTRL_Input g_XPCommand2;
+//extern XPState g_XPState2;
+
+extern HANDLE g_XCommandMutex;
+//extern HANDLE g_XStateMutex;
+//extern HANDLE g_XCommandMutex2;
+//extern HANDLE g_XStateMutex2;
+
 char* encode_PPM(int cmd_ch1, int cmd_ch2, int cmd_ch3, int cmd_ch4){
 	
 	int cmd_ch[4] = { 0, 0, 0, 0}; //Default values for each channels
@@ -46,3 +57,4 @@ char* encode_PPM(int cmd_ch1, int cmd_ch2, int cmd_ch3, int cmd_ch4){
 	strcpy_s(rtrn,25, output_string);
 	return rtrn;
 }
+

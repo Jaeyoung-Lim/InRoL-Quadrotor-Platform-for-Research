@@ -10,7 +10,7 @@ typedef struct SCIENFITIC_COMMANDDATA
 {
 	//always 0x17
 	//#define CommandDataDescriptor 0x17
-	unsigned char packetdescriptor;
+	//unsigned char packetdescriptor;
 	//pitch, roll, thrust, yaw commands. 0..4095 2048=middle
 	unsigned short pitch;
 	unsigned short roll;
@@ -67,6 +67,7 @@ typedef struct SCIENTIFIC_STATUSDATA
 	unsigned short flags;
 } XStatus;
 
+/*
 typedef struct SCIENTIFIC_DATA
 {
 	int calcData_angle_pitch;
@@ -86,6 +87,7 @@ typedef struct SCIENTIFIC_DATA
 
 	long long time_to_go;
 } XState;
+*/
 
 typedef struct SCIENTIFIC_CONFIG
 {
@@ -280,6 +282,7 @@ typedef struct CTRL_INPUT {
 	short roll; //Roll input: -2047..+2047 (0=neutral)
 	short yaw; //(=R/C Stick input) -2047..+2047 (0=neutral)
 	short thrust; //Collective: 0..4095 = 0..100%
+	/*
 	short ctrl; /*control byte:
 					bit 0: pitch control enabled
 					bit 1: roll control enabled
@@ -288,7 +291,7 @@ typedef struct CTRL_INPUT {
 					These bits can be used to only enable one axis at a time and&
 					thus to control the other axes manually. This usually &
 					helps a lot to set up and finetune controllers for each axis seperately. */
-	short chksum;
+	//short chksum;
 } CTRL_Input;
 
 
@@ -305,6 +308,7 @@ struct PelicanComPacket
 };
 #pragma pack()
 
+/*
 typedef struct HAPTIC_STATE
 {
 	double x;
@@ -335,7 +339,7 @@ typedef struct HAPTIC_COMMAND
 	char check;
 	double time_to_go;
 }HCommand;
-
+*/
 class IStringFactory
 {
 public:
@@ -450,6 +454,7 @@ typedef struct TRACKER_STATE{
 	unsigned long long  seqNo;
 }TState;
 
+/*
 typedef struct PTAM_STATE{
 
 	double		Translation[ 3 ];
@@ -457,7 +462,7 @@ typedef struct PTAM_STATE{
 	double      RotationMatrix[ 9 ];
 	unsigned long long  seqNo;
 }PState;
-
+*/
 typedef struct Simple_DATA //52Byte
 {
 	//check for state of ptam
@@ -502,6 +507,7 @@ typedef struct Desired_Motion{
 	double az;
 }DMotion;
 
+/*
 typedef struct Haptic_Data
 {
 	double i[3];
@@ -509,7 +515,7 @@ typedef struct Haptic_Data
 	double time_to_go;
 	int Loss;
 }Data;
-
+*/
 typedef struct SEND_PACKET
 {
 	Data data;

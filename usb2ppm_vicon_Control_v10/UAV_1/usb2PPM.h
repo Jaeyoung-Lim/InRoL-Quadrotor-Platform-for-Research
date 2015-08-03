@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <string>
 #include <iostream>
+#include "DataStructure.h"
+
 using namespace std;
 
 extern char* rtrn;

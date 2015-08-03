@@ -18,7 +18,6 @@ private:
 	COMSTAT status;
 	//Keep track of last error
 	DWORD errors;
-
 public:
 	//Initialize Serial communication with the given COM port
 	Serial(char *portName);
@@ -34,8 +33,6 @@ public:
 	bool WriteData(char *buffer, unsigned int nbChar);
 	//Check if we are actually connected
 	bool IsConnected();
-
-
 };
 
 #endif // SERIALCLASS_H_INCLUDED

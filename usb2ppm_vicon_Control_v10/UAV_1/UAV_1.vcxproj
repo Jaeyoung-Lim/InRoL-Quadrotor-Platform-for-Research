@@ -148,12 +148,14 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Omega.h" />
     <ClInclude Include="PSPM.h" />
+    <ClInclude Include="SerialClass.h" />
     <ClInclude Include="SerialCom.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tracker.h" />
     <ClInclude Include="Desired.h" />
     <ClInclude Include="UDP.h" />
+    <ClInclude Include="usb2PPM.h" />
     <ClInclude Include="Vector3.h" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +164,7 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Omega.cpp" />
     <ClCompile Include="PSPM.cpp" />
+    <ClCompile Include="Serial.cpp" />
     <ClCompile Include="SerialCom.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -172,6 +175,7 @@
     <ClCompile Include="Tracker.cpp" />
     <ClCompile Include="UAV_1.cpp" />
     <ClCompile Include="UDP.cpp" />
+    <ClCompile Include="usb2PPM.cpp" />
     <ClCompile Include="Vector3.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
