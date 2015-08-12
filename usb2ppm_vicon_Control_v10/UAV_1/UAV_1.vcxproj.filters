@@ -57,9 +57,6 @@
     <ClInclude Include="Desired.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SerialClass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="usb2PPM.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -99,9 +96,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="usb2PPM.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Serial.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

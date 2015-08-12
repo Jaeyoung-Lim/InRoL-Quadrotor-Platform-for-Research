@@ -148,7 +148,6 @@
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Omega.h" />
     <ClInclude Include="PSPM.h" />
-    <ClInclude Include="SerialClass.h" />
     <ClInclude Include="SerialCom.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
@@ -164,7 +163,6 @@
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Omega.cpp" />
     <ClCompile Include="PSPM.cpp" />
-    <ClCompile Include="Serial.cpp" />
     <ClCompile Include="SerialCom.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

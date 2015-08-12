@@ -289,6 +289,7 @@ int HXControl(void)
 
 	R2=RY*RP*RP;
 	R2=R;
+	/*
 	//Get Acceleration from Flyer
 	double acc_x = cur_XPState.acc_x/10000.0*g;
 	double acc_y = cur_XPState.acc_y/10000.0*g;
@@ -301,6 +302,7 @@ int HXControl(void)
 	double fil_alph = 0.05;
 	acc_fil = L_acc*fil_alph+acc_fil*(1-fil_alph);
 
+	*/
 	//Get Acceleration from Dynamics
 	static double m_hat = 0.55+0.25; // initial estimated mass value
 	static double m_hat2 = 0.55+0.25; // initial estimated mass value
@@ -318,7 +320,7 @@ int HXControl(void)
 
 
 
-
+	/*
 	//raw data zone
 	double a_x = cur_XPState.acc_x_calib / 10000.0*g;
 	double a_y = cur_XPState.acc_y_calib / 10000.0*g;
@@ -342,7 +344,7 @@ int HXControl(void)
 	int Hx = cur_XPState.Hx;
 	int Hy = cur_XPState.Hy;
 	int Hz = cur_XPState.Hz;
-
+	*/
 
 
 	Vector3 xd, xd2;
@@ -376,7 +378,7 @@ int HXControl(void)
 	double dlambda = Rtv.z - alpha*lambda;
 	lambda = max(lambda + T*dlambda,1.0); //avoid being zero
 	m_hat = m_hat+dm_hat*T;
-
+	/*
 	//2nd UAV
 	Vector3 e2=x2-xd2;
 	Vector3 de2=dx2-dxd2;
@@ -392,7 +394,7 @@ int HXControl(void)
 	double dlambda2 = Rtv2.z - alpha*lambda2;
 	lambda2 = max(lambda2 + T*dlambda2,1.0); //avoid being zero
 	m_hat2 = m_hat2+dm_hat2*T;
-				
+	*/		
 
 	double thrustValue;
 	double polya = 0.000001301; 
@@ -400,13 +402,15 @@ int HXControl(void)
 	double polyc = 0.3604 - lambda;
 	double newton2value = (-polyb+sqrt(polyb*polyb-4*polya*polyc))/(2*polya);
 	thrustValue = newton2value;//193.3*lambda+511.5;//
-		
+	
+	/*
 	double thrustValue2;
 	double polya2 = 0.000001301; 
 	double polyb2 = 0.0011; 
 	double polyc2 = 0.3604 - lambda2;
 	double newton2value2 = (-polyb2+sqrt(polyb2*polyb2-4*polya2*polyc2))/(2*polya2);
 	thrustValue2 = newton2value2;//193.3*lambda+511.5;//
+	*/
 
 	//keyboard setting!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	if( _kbhit() )
@@ -510,6 +514,7 @@ int HXControl(void)
 	double yawspeed2 = 2048 + compen_w3;// + 3*yawangle;
 
 //*************************************************Translate all to Flyer's Value**********************************************************
+		
 		cur_XPCommand.thrust = max(min(thrustValue,2500),0); 
 		cur_XPCommand.pitch = min(max(compen_w2 +11.7*w2,-2048),2048); // minus is positive direction   
 		cur_XPCommand.roll = min(max(compen_w1 +11.4*w1,-2048),2048); // minus is positive direction   
