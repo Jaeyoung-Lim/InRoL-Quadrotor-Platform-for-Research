@@ -15,8 +15,14 @@
 // Pin Definitions
 #define led_PIN  7 //LED Status LED
 #define armsw_PIN 5 // Arm switch pin
-#define trimsw_PIN 5 //Trim enable switch
+#define mode_PIN 4 //Trim enable switch
 #define ppmout_PIN 10 // PPM output
+
+//Mode ID
+#define mode_trim 0
+#define mode_serial 1
+int mode=0;
+
 
 
 //String Variable initialization
@@ -24,6 +30,7 @@ boolean stringComplete = false;  // whether the string is complete
 char cmd_Char[26]="";
 int inputString[4][26];         // a string to hold incoming data
 int cmd_val[4];
+int trim_val[4];
 int inChar=0;
 
 //Timer variables
@@ -33,7 +40,7 @@ int pulses[8];
 int number_of_outputs =8;
 
 int count=650;
-
+int arm_stat =0;
 
 void setup() {
   //Set Pinmodes
@@ -55,33 +62,26 @@ void setup() {
 }
 // Main Loop will run at 50Hz
 void loop() {
-
-  /* 
-   *  // Trim Mode
-  
-
-  //Arm Mode
-  if(armsw_PIN==HIGH){
-  }
-  else {
-  }
-  
-  */
- //Serial Mode
+   sw_read(); // Read mode switch / arm switches
    serial_Event(); //Read String to buffer
   
-  if (stringComplete) {//Execute if serial is received
-    
+   if(mode==mode_trim){ //Enter Trim Mode
+    sw_readTrim();
+    }
+  else {// Serial Mode
+    if (stringComplete) {//Execute if serial is received
     serial_Decode(); //Decode and copy the packet
-    ppm_command(); //Copy commands to ppm
-    Serial.print(inputString[0][0]);
-
+    }
   }
-    
   
+  ppm_command(mode); //Set pulse values for PPM signal
   ppm_minmax(); //Constrain pulse values to the minimum and maximum
+  sw_led();
   timer_loopcount(); //Counter for handshake
-
-delay(20);
+  
+  //Always disable serial monitor before operating, only for development use
+  //serial_monitor(); //For debugging through Serial Monitor
+  serial_handshake();
+  
+  delay(20);
 }
-

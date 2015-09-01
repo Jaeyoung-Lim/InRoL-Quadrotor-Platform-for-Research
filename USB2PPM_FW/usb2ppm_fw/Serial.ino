@@ -58,3 +58,27 @@ void init_buffer(){
    }
    stringComplete = false; //Disable flag
 }
+
+void serial_monitor(){
+  Serial.print(" armSW: "); Serial.print(arm_stat);
+  Serial.print(" modeSW: "); Serial.println(mode);
+  
+  Serial.print("Ch1: ");  Serial.print(pulses[0]);
+  Serial.print(" Ch2: "); Serial.print(pulses[1]);
+  Serial.print(" Ch3: "); Serial.print(pulses[2]);
+  Serial.print(" Ch4: "); Serial.print(pulses[3]);
+   Serial.print(" Ch4: "); Serial.print(pulses[6]);
+  /*
+  Serial.print("trim1: ");  Serial.print(trim_val[0]);
+  Serial.print(" trim2: "); Serial.print(trim_val[1]);
+  Serial.print(" trim3: "); Serial.print(trim_val[2]);
+  Serial.print(" trim4: "); Serial.print(trim_val[3]);
+  */
+}
+
+void serial_handshake(){
+  if(count>50){
+  Serial.print("Ack");
+  }
+}
+

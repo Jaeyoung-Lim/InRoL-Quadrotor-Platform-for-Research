@@ -19,8 +19,8 @@ char* encode_PPM(int cmd_ch1, int cmd_ch2, int cmd_ch3, int cmd_ch4){
 	//for loop for each channel value processing
 	for (int i = 0; i < 4; i++){
 		//Set maximum values
-		if (cmd_ch[i] > 1800){
-			cmd_ch[i] = 1800;
+		if (cmd_ch[i] > 1023){
+			cmd_ch[i] = 1023;
 		}
 		else if (cmd_ch[i] < 1){
 			cmd_ch[i] = 0;
