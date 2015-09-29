@@ -1,10 +1,9 @@
-
 #include <windows.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string>
 #include <iostream>
 #include "DataStructure.h"
+
 
 #ifndef SERIALCLASS_H_INCLUDED
 #define SERIALCLASS_H_INCLUDED
@@ -25,15 +24,15 @@ private:
 	bool connected;
 	//Get various information about the connection
 	COMSTAT status;
-	//Keep track of last error
-	DWORD errors;
-	HANDLE hWriteThread, hReadThread;
+
+	DWORD errors;//Keep track of last error
 
 public:
 	//Initialize Serial communication with the given COM port
-	Serial(char *portName);
-	//Close the connection
-	~Serial();
+	Serial(void);
+	~Serial();//Close the connection
+public:
+	int Ini(char *portName);
 	//Read data in a buffer, if nbChar is greater than the
 	//maximum number of bytes available, it will return only the
 	//bytes available. The function return -1 when nothing could
@@ -44,6 +43,8 @@ public:
 	bool WriteData(char *buffer, unsigned int nbChar);
 	//Check if we are actually connected
 	bool IsConnected();
+private:
+	HANDLE hWriteThread;
 };
 
 #endif // SERIALCLASS_H_INCLUDED

@@ -36,7 +36,7 @@ Desired::Desired(int mode, int index, double time, double time0)
 	{
 		if (index == 1) // for hovering
 		{
-			Vector3 xd(0.0, 0.0, -0.3);
+			Vector3 xd(0.0, 0.0, -0.5);
 			_x= xd;
 		}
 
@@ -86,63 +86,9 @@ Desired::Desired(int mode, int index, double time, double time0)
 			_x= xd;
 
 		}
-		else if (index == 5) // slow swing for ptam
-		{
-			double omega = 0.3;
-			double traj_mag = 0.5;
-
-			Vector3 xd(traj_mag*sin(omega*ntime), 0.0, -1.0);
-			Vector3 dxd(traj_mag*omega*cos(omega*ntime), 0.0, 0.0);
-			Vector3 ddxd(-traj_mag*omega*omega*sin(omega*ntime), 0.0, 0.0);
-			Vector3 dddxd(-traj_mag*omega*omega*omega*cos(omega*ntime), 0.0, 0.0);
-
-			_x= xd;	_v= dxd;	_a= ddxd;	_da= dddxd;
-		}
 	}
-
-
 	///////////////////////////////////////////////////////////////////////////
-	else if (mode == 3) // numbers
-	{
-		Vector3 uni(0.5, 0.5, -1.5);
-		if (index == 1) // numbers_1
-		{
-			Vector3 xd(uni.x, uni.y, uni.z);	_x= xd;
-		}
-		else if (index == 2) // numbers_2
-		{
-			Vector3 xd(uni.x, 0.0, uni.z);	_x= xd;
-		}
-		else if (index == 3) // numbers_3
-		{
-			Vector3 xd(uni.x, (-1)*uni.y, uni.z);	_x= xd;
-
-		}
-		else if (index == 4) // numbers_4
-		{
-			Vector3 xd(0.0, uni.y, uni.z);	_x= xd;
-		}
-		else if (index == 5) // numbers_5
-		{
-			Vector3 xd(0.0, 0.0, uni.z);	_x= xd;
-		}
-		else if (index == 6) // numbers_6
-		{
-			Vector3 xd(0.0, (-1)*uni.y, uni.z);	_x= xd;
-		}
-		else if (index == 7) // numbers_7
-		{
-			Vector3 xd((-1)*uni.x, uni.y, uni.z);	_x= xd;
-		}
-		else if (index == 8) // numbers_8
-		{
-			Vector3 xd((-1)*uni.x, 0.0, uni.z);	_x= xd;
-		}
-		else if (index == 9) // numbers_9
-		{
-			Vector3 xd((-1)*uni.x, (-1)*uni.y, uni.z);	_x= xd;
-		}
-	}
+	//Erased Mode 3
 
 	x = _x;
 	v = _v;

@@ -1,25 +1,35 @@
-#include "usb2PPM.h"
-#include "SerialClass.h"
 #include "StdAfx.h"
+#include "usb2PPM.h"
 #include <algorithm>
 
+DWORD WINAPI WriteThreadFunc(LPVOID);
 
 extern CTRL_Input g_XPCommand;
-//extern XPState g_XPState;
-
-//extern CTRL_Input g_XPCommand2;
-//extern XPState g_XPState2;
-
 extern HANDLE g_XCommandMutex;
-//extern HANDLE g_XStateMutex;
-//extern HANDLE g_XCommandMutex2;
-//extern HANDLE g_XStateMutex2;
+char* rtrn = NULL;
 
-Serial::Serial(char *portName)
+Serial::Serial(void)
 {
+	hWriteThread = INVALID_HANDLE_VALUE;
+}
+
+Serial::~Serial()
+{
+	//Check if we are connected before trying to disconnect
+	if (this->connected)
+	{
+		//We're no longer connected
+		this->connected = false;
+		//Close the serial handler
+		CloseHandle(this->hSerial);
+	}
+}
+
+int Serial::Ini(char *portName)
+{
+	int iResult =0;
 	//We're not yet connected
 	this->connected = false;
-
 	//Try to connect to the given port throuh CreateFile
 	this->hSerial = CreateFile(portName,
 		GENERIC_READ | GENERIC_WRITE,
@@ -28,20 +38,19 @@ Serial::Serial(char *portName)
 		OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL,
 		NULL);
-
 	//Check if the connection was successfull
 	if (this->hSerial == INVALID_HANDLE_VALUE)
 	{
 		//If not success full display an Error
 		if (GetLastError() == ERROR_FILE_NOT_FOUND){
-
 			//Print Error if neccessary
 			printf("ERROR: Handle was not attached. Reason: %s not available.\n", portName);
-
 		}
 		else
 		{
 			printf("ERROR!!!");
+			iResult = 1;
+			return iResult;
 		}
 	}
 	else
@@ -57,8 +66,7 @@ Serial::Serial(char *portName)
 		}
 		else
 		{
-			//Define serial connection parameters for the arduino board
-			dcbSerialParams.BaudRate = CBR_115200;
+			dcbSerialParams.BaudRate = CBR_115200; //Define serial connection parameters for the arduino board
 			dcbSerialParams.ByteSize = 8;
 			dcbSerialParams.StopBits = ONESTOPBIT;
 			dcbSerialParams.Parity = NOPARITY;
@@ -81,21 +89,12 @@ Serial::Serial(char *portName)
 				Sleep(ARDUINO_WAIT_TIME);
 			}
 		}
+		hWriteThread = CreateThread(NULL, 0, WriteThreadFunc, this, 0, NULL);	
 	}
-
+	//hWriteThread = CreateThread(NULL, 0, WriteThreadFunc, this, 0, NULL);
+	return 0;
 }
 
-Serial::~Serial()
-{
-	//Check if we are connected before trying to disconnect
-	if (this->connected)
-	{
-		//We're no longer connected
-		this->connected = false;
-		//Close the serial handler
-		CloseHandle(this->hSerial);
-	}
-}
 
 int Serial::ReadData(char *buffer, unsigned int nbChar)
 {
@@ -159,7 +158,7 @@ bool Serial::IsConnected()
 }
 
 
-char* encode_PPM(int cmd_ch1, int cmd_ch2, int cmd_ch3, int cmd_ch4){
+char* encode_PPM(short cmd_ch1, short cmd_ch2, short cmd_ch3, short cmd_ch4){
 	
 	int cmd_ch[4] = { 0, 0, 0, 0}; //Default values for each channels
 	char output_string[26]="\0";
@@ -167,19 +166,19 @@ char* encode_PPM(int cmd_ch1, int cmd_ch2, int cmd_ch3, int cmd_ch4){
 	rtrn = (char*)malloc(26);
 
 	char const_ch[4] = { 'x','y', 'z', 'k' };
-
-	cmd_ch[0] = cmd_ch1;
-	cmd_ch[1] = cmd_ch2;
-	cmd_ch[2] = cmd_ch3;
-	cmd_ch[3] = cmd_ch4;
-	
+	///////////////////////////////////////////
+	cmd_ch[0] = (int) cmd_ch1;
+	cmd_ch[1] = (int) cmd_ch2;
+	cmd_ch[2] = (int) cmd_ch3;
+	cmd_ch[3] = (int) cmd_ch4;
+	//////////////////////////////////////////
 	int j = 0;
 	
 	//for loop for each channel value processing
 	for (int i = 0; i < 4; i++){
 		//Set maximum values
-		if (cmd_ch[i] > 1023){
-			cmd_ch[i] = 1023;
+		if (cmd_ch[i] > 4000){
+			cmd_ch[i] = 4000;
 		}
 		else if (cmd_ch[i] < 1){
 			cmd_ch[i] = 0;
@@ -189,8 +188,6 @@ char* encode_PPM(int cmd_ch1, int cmd_ch2, int cmd_ch3, int cmd_ch4){
 
 		_itoa_s(cmd_ch[i], cmd_ch_s, 10);
 
-
-		
 		//convert to single string for communication with Arduino
 
 		*(output_string_p + j) = const_ch[i];
@@ -210,37 +207,68 @@ DWORD WINAPI WriteThreadFunc(LPVOID lpParam)
 {
 	int iResult = 0;	
 	
-	SerialCom *pSCom = (SerialCom *)lpParam;
+	Serial *sp = (Serial *)lpParam;
 
 	CTRL_Input cur_XPCommand = {0};
-
+	/*
 	unsigned short crc = 0;
 	short *ptr = NULL;
 	unsigned short length = 0;
 
 	unsigned short *ptr_p = NULL;
 	unsigned short packets = 0x0400;
-	
+	*/
+
+	//printf("Serial Interface Initiation\n");
+	//Serial* SP = new Serial("\\\\.\\COM24");    // adjust as needed
+
+	char incomingData[27] = "";			// don't forget to pre-allocate memory
+	char outgoingData[27] = "";
+
+
+	int dataLength = 26;
+	int readResult = 0;
+	int i=0;
+	int ch1=650;
+	int cnt = 0;
+	int cnt_hz = 0;
+
 	while(true)
 	{
-
 		// Copy the global XCommand
 		WaitForSingleObject(g_XCommandMutex, INFINITE);
-		memcpy(&cur_XPCommand, &g_XPCommand, sizeof(g_XPCommand));
+		memcpy(&cur_XPCommand, &g_XPCommand, sizeof(CTRL_INPUT));
 		ReleaseMutex(g_XCommandMutex);
 		
-		DWORD dwNumBytesWritten;   
-		DWORD dwHaveNumWritten =0 ; //已经写入多少
+		//printf("Bytes read: (-1 means no data available) %i\n", readResult);
+		//Ch1 : ROLL Ch2: Thrust Ch3: Pitch Ch4: Yaw
+		strcpy_s(outgoingData, 26, encode_PPM(cur_XPCommand.roll, cur_XPCommand.thrust, cur_XPCommand.pitch, cur_XPCommand.yaw));
+		//strcpy_s(outgoingData, 26, encode_PPM(512.0, 512.0, 512.0, cur_XPCommand.yaw));
+		//printf("Incoming data : %s\n", incomingData);
+		//SP->WriteData(outgoingData, dataLength);
+		sp->WriteData(outgoingData, dataLength);
+		//std::string test(incomingData);
+		readResult = sp->ReadData(incomingData, dataLength);
+		
+		ch1 ++;
+		
 
-		PelicanComPacket xpacket;
-		ptr = &(cur_XPCommand.pitch);
-		memcpy(xpacket.startMark,">*>di",5);
-		memcpy(&xpacket.command, ptr, sizeof(CTRL_Input));
-		WriteFile(pSCom->hSerial,&xpacket,sizeof(xpacket),&dwNumBytesWritten,NULL);
-		PurgeComm(pSCom->hSerial, PURGE_TXCLEAR );
-
-		PurgeComm(pSCom->hSerial, PURGE_TXCLEAR );
-		Sleep(40);
+		free(rtrn);
+		cnt++;
+		printf("data : %s \n", outgoingData);
+		//printf("data : %s \n", incomingData);
+		
+		if (cnt == 50){
+			//Read data for handshake
+			readResult = sp->ReadData(incomingData, dataLength);
+			cnt_hz++;
+			cnt = 0; 
+		}
+		if (cnt ==1023){
+			cnt = 0;
+		}
+		
+		Sleep(20);
 	}
 	return iResult;
 }
