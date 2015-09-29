@@ -195,7 +195,7 @@ int HXControl(void)
 	xd = traj.x;	dxd = traj.v;	ddxd = traj.a;	dddxd = traj.da;
 	xd2 = xd;	dxd2 = dxd;	ddxd2 = ddxd;	dddxd2 = dddxd;
 
-	double k = 26.0;//3.0;  lag wormming<<<<0.5<<<<occilating //k=4.0 seems to be best for IMU-Vicon 15.02.27
+	double k = 2.0;//3.0;  lag wormming<<<<0.5<<<<occilating //k=4.0 seems to be best for IMU-Vicon 15.02.27
 	double b = sqrt(0.1*m*k);//			  sqrt(4*m*k);//sqrt(0.1*m*k)seems to be best for IMU-Vicon 15.02.27
 	double alpha = 100.0;//						 50<<<<steady//100.0 seems to be best for IMU-Vicon 15.02.27
 	double epsi = b/(8*m);//b/(8*m);responsive<<<8<<<steady
