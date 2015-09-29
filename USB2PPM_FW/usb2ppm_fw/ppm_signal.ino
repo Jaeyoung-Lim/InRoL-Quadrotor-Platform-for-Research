@@ -2,21 +2,33 @@ void ppm_command(int mode){
   
   if(mode == mode_serial){ //Serial mode ppm generation
     //Channel 1 to Channel 4 receives command values for control
+      /*
+      if(cmd_val[0]>0 && cmd_val[0]<1023) pulses[0] = map(cmd_val[0]+0.1*trim_val[0], 0, 1023, 650, 1800); // Copy Pulse values
+      if(cmd_val[1]>0 && cmd_val[1]<1023) pulses[1] = map(cmd_val[1], 0, 1023, 650, 1800); //Map Pulse values
+      if(cmd_val[2]>0 && cmd_val[2]<1023) pulses[2] = map(cmd_val[2]+0.1*trim_val[1], 0, 1023, 650, 1800); // Copy Pulse values
+      if(cmd_val[3]>0 && cmd_val[3]<1023) pulses[3] = map(cmd_val[3]+0.1*trim_val[3], 0, 1023, 650, 1800); // Copy Pulse values
+      */
+      if(cmd_val[0]>10 && cmd_val[0]<1023) pulses[0] = map(cmd_val[0], 0, 1023, 650, 1700)+20; // Copy Pulse values
+      if(cmd_val[1]>10 && cmd_val[1]<1023) pulses[1] = map(cmd_val[1], 0, 1023, 650, 1700)+20; //Map Pulse values
+      if(cmd_val[2]>10 && cmd_val[2]<1023) pulses[2] = map(cmd_val[2], 0, 1023, 650, 1700)+20; // Copy Pulse values
+      if(cmd_val[3]>10 && cmd_val[3]<1023) pulses[3] = map(cmd_val[3], 0, 1023, 650, 1700)+20; // Copy Pulse values
+      /*
       pulses[0] = map(cmd_val[0]+0.1*trim_val[0], 0, 1023, 650, 1800); // Copy Pulse values
       pulses[1] = map(cmd_val[1], 0, 1023, 650, 1800); //Map Pulse values
       pulses[2] = map(cmd_val[2]+0.1*trim_val[1], 0, 1023, 650, 1800); // Copy Pulse values
       pulses[3] = map(cmd_val[3]+0.1*trim_val[3], 0, 1023, 650, 1800); // Copy Pulse values
-   
+      */
     }
   else if(mode == mode_trim ){
       //Channel 1 to Channel 4 receives command values only from trim levers
-      pulses[0] = 1200 + trim_val[0];
+     
       pulses[2] = 1200 + trim_val[1];
       pulses[1] = 650+trim_val[2];
       pulses[3] = 1200 + trim_val[3];
+      pulses[0] = 1200 + trim_val[0];
     }
-     pulses[4] = 1000; // Channel 5
      
+      pulses[4] = 1000;
   if(arm_stat==1){ //Values from Channel 6 is defined by arming switch
      pulses[5]=1550;  
     }

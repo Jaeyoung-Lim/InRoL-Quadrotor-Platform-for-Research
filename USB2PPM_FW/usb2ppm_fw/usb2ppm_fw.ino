@@ -39,7 +39,7 @@ int timer_ptr = 0;                 //timer array pointer
 int pulses[8];
 int number_of_outputs =8;
 
-int count=650;
+int count=0;
 int arm_stat =0;
 
 void setup() {
@@ -49,6 +49,7 @@ void setup() {
   pinMode(led_PIN, OUTPUT);
 
   Serial.begin(115200); // Initialize Serial
+  
   init_buffer(); //Initialize buffer
   
                       // Setup Timer
@@ -79,9 +80,8 @@ void loop() {
   sw_led();
   timer_loopcount(); //Counter for handshake
   
-  //Always disable serial monitor before operating, only for development use
-  //serial_monitor(); //For debugging through Serial Monitor
+  //serial_monitor()//Always disable serial monitor before operating, only for development use
   serial_handshake();
   
-  delay(20);
+  delay(18);
 }

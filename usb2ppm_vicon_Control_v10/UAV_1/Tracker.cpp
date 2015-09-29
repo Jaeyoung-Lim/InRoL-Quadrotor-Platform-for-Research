@@ -3,9 +3,7 @@
 #include <algorithm>
 
 extern HANDLE g_TStateMutex;
-extern HANDLE g_TStateMutex2;
 extern TState g_TState;
-extern TState g_TState2;
 
 DWORD WINAPI TrackerPollingThreadFunc (LPVOID lpParam);
 double CaliPosition[3];
@@ -28,7 +26,7 @@ int Tracker::Ini(void)
 	int iResult = 0;
 
 	bool TransmitMulticast = false;
-	std::string HostName = "localhost:801";
+	std::string HostName = "147.46.175.54:801";//"localhost:801";
 
 	
   // Connect to a server
@@ -189,7 +187,7 @@ DWORD WINAPI TrackerPollingThreadFunc (LPVOID lpParam)  // The rate is about 100
 	WaitForSingleObject(g_TStateMutex2, INFINITE);
 	memcpy(&g_TState2, &cur_TState2, sizeof(TState));
 	ReleaseMutex(g_TStateMutex2);
-	*/	
+	*/
 	//Sleep(2);
 	}//while(true)
 }

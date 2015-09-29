@@ -1,5 +1,4 @@
 # pragma once
-
 #include <Windows.h>
 #include <string>
 #include <assert.h> 
@@ -515,8 +514,9 @@ typedef struct Haptic_Data
 	double time_to_go;
 	int Loss;
 }Data;
-*/
+
 typedef struct SEND_PACKET
 {
 	Data data;
 }Packet_send;
+*/

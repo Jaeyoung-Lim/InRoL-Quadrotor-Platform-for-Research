@@ -7,9 +7,17 @@
  
 void serial_Event() {
   int p=0;
-  int j=0;
+  int j=5;
+  bool flag=true;
   init_buffer(); //Reiniitialize buffer
+
   while (Serial.available()) {
+    
+    if(flag){
+      init_buffer(); //Reiniitialize buffer
+      flag=false;
+    }
+    
     inChar = Serial.read();  // get the new byte:
     if(inChar == 'x'){
       j=0;
@@ -32,6 +40,9 @@ void serial_Event() {
       break;
     }
     else if(inChar >= 48 && inChar <= 57) {
+      if(j==5){
+        continue;
+      }
       inputString[j][p] += inChar; // add it to the inputString:
       p++;
     }
@@ -41,7 +52,7 @@ void serial_Event() {
 void serial_Decode(){
    int p; //pointer to read string
  for(int j=0; j<4; j++){
-  p=0;
+ p=0;
  while(inputString[j][p]!=0){
       cmd_val[j]=10*cmd_val[j]+(inputString[j][p]-48); //String is sent in a decimal value
       p++; //move the pointer
